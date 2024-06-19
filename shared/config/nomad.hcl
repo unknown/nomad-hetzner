@@ -1,11 +1,11 @@
 data_dir  = "/opt/nomad/data"
 bind_addr = "0.0.0.0"
 
-# Specify advertise address
+# Specify network interface
 advertise {
-  http = "IP_ADDRESS"
-  rpc  = "IP_ADDRESS"
-  serf = "IP_ADDRESS"
+  http = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
+  rpc  = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
+  serf = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
 }
 
 # Enable the server

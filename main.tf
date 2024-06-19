@@ -58,6 +58,7 @@ resource "hcloud_server" "server" {
     region                    = var.region
     cloud_env                 = "hcloud"
     retry_join                = jsonencode(var.retry_join)
+    network_interface         = var.network_interface
     nomad_binary              = var.nomad_binary
     nomad_consul_token_id     = random_uuid.nomad_id.result
     nomad_consul_token_secret = random_uuid.nomad_token.result
@@ -87,6 +88,7 @@ resource "hcloud_server" "client" {
     region                    = var.region
     cloud_env                 = "hcloud"
     retry_join                = jsonencode(var.retry_join)
+    network_interface         = var.network_interface
     nomad_binary              = var.nomad_binary
     nomad_consul_token_id     = random_uuid.nomad_id.result
     nomad_consul_token_secret = random_uuid.nomad_token.result

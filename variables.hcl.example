@@ -11,6 +11,7 @@ snapshot_image            = "SNAPSHOT_ID_FROM_PACKER_BUILD"
 # retry_join              = ["10.0.2.11", "10.0.2.12", "10.0.2.13"]
 # allowlist_ip            = "0.0.0.0/0"
 # name                    = "nomad"
+# network_interface       = "enp7s0"
 # server_instance_type    = "cpx11"
 # server_count            = "3"
 # client_instance_type    = "cpx11"

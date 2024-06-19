@@ -2,6 +2,13 @@ data_dir  = "/opt/nomad/data"
 bind_addr = "0.0.0.0"
 datacenter = "dc1"
 
+# Specify network interface
+advertise {
+  http = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
+  rpc  = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
+  serf = "{{ GetInterfaceIP \"NETWORK_INTERFACE\" }}"
+}
+
 # Enable the client
 client {
   enabled = true

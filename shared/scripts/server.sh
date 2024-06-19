@@ -16,7 +16,8 @@ DOCKER_BRIDGE_IP_ADDRESS=(`ip -brief addr show docker0 | awk '{print $3}' | awk 
 CLOUD=$1
 SERVER_COUNT=$2
 RETRY_JOIN=$3
-NOMAD_BINARY=$4
+NETWORK_INTERFACE=$4
+NOMAD_BINARY=$5
 
 # Get IP from metadata service
 case $CLOUD in
@@ -75,6 +76,7 @@ if [[ `wget -S --spider $NOMAD_BINARY  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
 fi
 
 sed -i "s/SERVER_COUNT/$SERVER_COUNT/g" $CONFIGDIR/nomad.hcl
+sed -i "s/NETWORK_INTERFACE/$NETWORK_INTERFACE/g" $CONFIGDIR/nomad.hcl
 sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" $CONFIGDIR/nomad.hcl
 sudo cp $CONFIGDIR/nomad.hcl $NOMADCONFIGDIR
 

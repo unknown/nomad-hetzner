@@ -26,6 +26,11 @@ variable "allowlist_ip" {
   default     = "0.0.0.0/0"
 }
 
+variable "network_interface" {
+  description = "Network interface to advertise on (see: https://docs.hetzner.com/cloud/networks/server-configuration/)."
+  default     = "enp7s0"
+}
+
 variable "server_instance_type" {
   description = "The Hetzner instance type to use for servers."
   default     = "cpx11"

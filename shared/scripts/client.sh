@@ -14,7 +14,8 @@ sleep 15
 DOCKER_BRIDGE_IP_ADDRESS=(`ip -brief addr show docker0 | awk '{print $3}' | awk -F/ '{print $1}'`)
 CLOUD=$1
 RETRY_JOIN=$2
-NOMAD_BINARY=$3
+NETWORK_INTERFACE=$3
+NOMAD_BINARY=$4
 
 # Get IP from metadata service
 case $CLOUD in
@@ -56,6 +57,7 @@ if [[ `wget -S --spider $NOMAD_BINARY  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
   sudo chown root:root /usr/local/bin/nomad
 fi
 
+sed -i "s/NETWORK_INTERFACE/$NETWORK_INTERFACE/g" $CONFIGDIR/nomad_client.hcl
 sudo cp $CONFIGDIR/nomad_client.hcl $NOMADCONFIGDIR/nomad.hcl
 
 # Install and link CNI Plugins to support Consul Connect-Enabled jobs
