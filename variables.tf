@@ -6,7 +6,6 @@ variable "network_zone" {
   description = "The Hetzner network zone to create a subnet in."
 }
 
-
 variable "snapshot_image" {
   description = "The snapshot image to use for the server and client machines. Output from the Packer build process."
 }
@@ -16,14 +15,9 @@ variable "name" {
   default     = "nomad"
 }
 
-variable "ip_range" {
-  description = "Range to allocate IPs from for Hetzner private network."
-  default     = "10.0.0.0/24"
-}
-
 variable "retry_join" {
   description = "Used by Consul to automatically form a cluster."
-  default     = ["10.0.0.11", "10.0.0.12", "10.0.0.13"]
+  default     = ["10.0.2.11", "10.0.2.12", "10.0.2.13"]
   type        = list(string)
 }
 

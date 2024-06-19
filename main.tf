@@ -1,15 +1,15 @@
 # TODO: firewall
 
-resource "hcloud_network" "private_network" {
+resource "hcloud_network" "hashistack_network" {
   name     = "${var.name}-network"
-  ip_range = var.ip_range
+  ip_range = "10.0.0.0/16"
 }
 
-resource "hcloud_network_subnet" "network" {
-  network_id   = hcloud_network.private_network.id
+resource "hcloud_network_subnet" "hashistack_subnet" {
+  network_id   = hcloud_network.hashistack_network.id
   type         = "cloud"
   network_zone = var.network_zone
-  ip_range     = var.ip_range
+  ip_range     = "10.0.2.0/24"
 }
 
 resource "tls_private_key" "pk" {
@@ -41,11 +41,11 @@ resource "hcloud_server" "server" {
   location    = var.region
   image       = var.snapshot_image
   ssh_keys    = [hcloud_ssh_key.nomad.id]
-  depends_on  = [hcloud_network_subnet.network]
+  depends_on  = [hcloud_network_subnet.hashistack_subnet]
 
   network {
-    network_id = hcloud_network.private_network.id
-    ip         = "10.0.0.${10 + (count.index + 1)}"
+    network_id = hcloud_network.hashistack_network.id
+    ip         = "10.0.2.${10 + (count.index + 1)}"
   }
 
   public_net {
@@ -71,11 +71,11 @@ resource "hcloud_server" "client" {
   location    = var.region
   image       = var.snapshot_image
   ssh_keys    = [hcloud_ssh_key.nomad.id]
-  depends_on  = [hcloud_network_subnet.network]
+  depends_on  = [hcloud_network_subnet.hashistack_subnet]
 
   network {
-    network_id = hcloud_network.private_network.id
-    ip         = "10.0.0.${10 + var.server_count + (count.index + 1)}"
+    network_id = hcloud_network.hashistack_network.id
+    ip         = "10.0.2.${10 + var.server_count + (count.index + 1)}"
   }
 
   public_net {
