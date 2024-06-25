@@ -18,7 +18,7 @@ resource "tls_private_key" "pk" {
 }
 
 resource "hcloud_ssh_key" "nomad" {
-  name       = "nomad-hcloud-key-pair"
+  name       = "${var.name}-hcloud-key-pair"
   public_key = tls_private_key.pk.public_key_openssh
 }
 
@@ -56,7 +56,6 @@ resource "hcloud_server" "server" {
   user_data = templatefile("${path.module}/shared/data-scripts/user-data-server.sh", {
     server_count              = var.server_count
     region                    = var.region
-    cloud_env                 = "hcloud"
     retry_join                = jsonencode(var.retry_join)
     network_interface         = var.network_interface
     nomad_binary              = var.nomad_binary
@@ -86,7 +85,6 @@ resource "hcloud_server" "client" {
 
   user_data = templatefile("${path.module}/shared/data-scripts/user-data-client.sh", {
     region                    = var.region
-    cloud_env                 = "hcloud"
     retry_join                = jsonencode(var.retry_join)
     network_interface         = var.network_interface
     nomad_binary              = var.nomad_binary

@@ -13,34 +13,13 @@ CONSULTEMPLATECONFIGDIR=/etc/consul-template.d
 sleep 15
 
 DOCKER_BRIDGE_IP_ADDRESS=(`ip -brief addr show docker0 | awk '{print $3}' | awk -F/ '{print $1}'`)
-CLOUD=$1
-SERVER_COUNT=$2
-RETRY_JOIN=$3
-NETWORK_INTERFACE=$4
-NOMAD_BINARY=$5
+SERVER_COUNT=$1
+RETRY_JOIN=$2
+NETWORK_INTERFACE=$3
+NOMAD_BINARY=$4
 
 # Get IP from metadata service
-case $CLOUD in
-  aws)
-    echo "CLOUD_ENV: aws"
-    IP_ADDRESS=$(curl http://instance-data/latest/meta-data/local-ipv4)
-    ;;
-  gce)
-    echo "CLOUD_ENV: gce"
-    IP_ADDRESS=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/ip)
-    ;;
-  azure)
-    echo "CLOUD_ENV: azure"
-    IP_ADDRESS=$(curl -s -H Metadata:true --noproxy "*" http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0?api-version=2021-12-13 | jq -r '.["privateIpAddress"]')
-    ;;
-  hcloud)
-    echo "CLOUD_ENV: hcloud"
-    IP_ADDRESS=$(curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4)
-    ;;
-  *)
-    echo "CLOUD_ENV: not set"
-    ;;
-esac
+IP_ADDRESS=$(curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4)
 
 # Consul
 sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" $CONFIGDIR/consul.hcl
