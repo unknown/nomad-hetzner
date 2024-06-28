@@ -3,6 +3,7 @@ ui = true
 backend "consul" {
   path          = "vault/"
   address       = "IP_ADDRESS:8500"
+  token         = "CONSUL_VAULT_TOKEN"
   cluster_addr  = "https://IP_ADDRESS:8201"
   redirect_addr = "http://IP_ADDRESS:8200"
 }
